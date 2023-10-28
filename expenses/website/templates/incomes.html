@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Incomes{% endblock %}
+
+{% block content %}
+<style>
+    :root, :root::before, :root::after {
+        box-sizing: border-box;
+
+        --primary-color: #B9D9C3;
+        --accent-color: #F0810F;
+        --white: #FCFDFE;
+        --ff-title: 'Noto Serif', serif;
+        --ff-text: 'Muli', sans-serif;
+    }
+
+    .my-recipe {
+        background-color: var(--white);
+        font-family: var(--ff-text);
+        font-size: 16px;
+        margin: 5rem;
+    }
+
+    .card {
+        width: 32rem;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    / / border-bottom-right-radius: 2.5 rem;
+        box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .card--title {
+        font-family: var(--ff-title);
+    }
+
+    .card__title-box {
+        text-align: center;
+        background-color: var(--primary-color);
+        color: #555;
+    }
+
+
+    .card__ingredients, .card__directions {
+        padding: 0 1.6rem;
+    }
+
+    .card_ingredients--wrapper {
+        padding-left: 1.6rem;
+
+    }
+
+
+</style>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add new
+</button>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for income in current_user.incomes %}
+    <tr>
+        <th scope="row">{{income.id}}</th>
+        <td>{{income.amount}}</td>
+        <td>{{income.date.strftime("%Y-%m-%d")}}</td>
+        <td>
+            <a href="/incomes_update/{{income.id}}">
+                <button class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+            </a>
+            <a href="/delete_income/{{income.id}}">
+                <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New income</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST">
+                <div class="modal-body">
+
+                    <div class="'form-group">
+                        <label for="amount">Amount</label>
+                        <input name="amount" id="amount" class="form-control">
+                    </div>
+                    <div>
+                        <label for="date">Date</label>
+                        <input type="date" name="date" id="date" class="form-control">
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

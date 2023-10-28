@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<body>
+<h1>Expenses Monthly Report</h1>
+<form>
+    <div>
+        Expenses year
+        <select style="width: 100px" name="year">
+            {% for year in years %}
+            {% if selected_year == year %}
+            <option value="{{year}}" selected>{{year}}</option>
+            {% else %}
+            <option value="{{year}}">{{year}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        Incomes year
+        <select style="width: 100px" name="year1">
+            {% for year1 in years1 %}
+            {% if selected_year1 == year1 %}
+            <option value="{{year1}}" selected>{{year1}}</option>
+            {% else %}
+            <option value="{{year1}}">{{year1}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Filter</button>
+</form>
+
+<div id='expensesChart' class='chart'></div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Amount</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i, row in amounts.iterrows() %}
+    <tr>
+        <td>{{row["amount"]}}</td>
+        <td>{{row["month"]}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<h1>Incomes Monthly Report</h1>
+
+<div id='incomesChart' class='chart'></div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Amount</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i, row in amounts1.iterrows() %}
+    <tr>
+        <td>{{row["amount"]}}</td>
+        <td>{{row["month"]}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+    var graphs1 = {{graphJSON1 | safe}};
+    Plotly.plot('incomesChart', graphs1, {});
+
+     var graphs = {{graphJSON | safe}};
+    Plotly.plot('expensesChart', graphs, {});
+</script>
+
+
+</body>
+{% endblock %}
+
+

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Expenses{% endblock %}
+
+{% block content %}
+
+<form method="POST" class="container col-2">
+    <p><u>Update expense id={{expense[0]}}</u></p>
+
+  <div class="form=group">
+    Name
+    <input name="name" class="form-control">
+  </div>
+    <div>
+    Category
+   <select id="category">
+   <option value="">Dom</option>
+   <option value="">Transport</option>
+   <option value="">Jedzenie</option>
+   <option value="">Zwierzęta</option>
+   <option value="">Rozrywka</option>
+   <option value="">Inne</option>
+   </select>
+      </div>
+ <div>
+    Amount
+    <input name="amount" class="form-control">
+  </div>
+  <div>
+    Date
+    <input name="date" type="date" class="form-control">
+  </div>
+  <button class="btn btn-success" type="submit">Submit</button>
+</form>
+
+<link href='https://fonts.googleapis.com/css?family=Didact+Gothic' rel='stylesheet' type='text/css'>
+<div class="wrap">
+    {% for expense in current_user.expenses %}
+    <div class="box box1 shadow1">
+        <h3><a href="/delete/{{expense.id}}">❌</a>{{expense.amount}}</h3>
+        {{expense.date}}
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

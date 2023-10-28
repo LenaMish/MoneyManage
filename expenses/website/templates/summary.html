@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Incomes Summary{% endblock %}
+
+{% block content %}
+<body>
+ <h1>Total incomes and expenses</h1>
+
+  <div id='chart' class='chart'></div>
+  <div id='expensesChart' class='chart'></div>
+
+<table class="table table-striped">
+     <thead>
+        <tr>
+            <th>Date</th>
+            <th>Incomes</th>
+            <th>Expenses</th>
+            <th>Diff</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i, row in amounts.iterrows() %}
+            <tr>
+                <td>{{row["date"]}}</td>
+                <td>{{row["incomes"]}}</td>
+                <td>-{{row["expenses"]}}</td>
+                <td>{{row["incomes"] - row["expenses"]}}</td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphs = {{graphJSON | safe}};
+  Plotly.plot('chart',graphs,{});
+</script>
+
+
+
+</body>
+{% endblock %}
+
+

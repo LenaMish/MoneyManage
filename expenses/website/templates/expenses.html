@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Expenses{% endblock %}
+
+{% block content %}
+<style>
+:root, :root::before, :root::after {
+  box-sizing: border-box;
+
+  --primary-color: #B9D9C3;
+  --accent-color: #F0810F;
+  --white: #FCFDFE;
+  --ff-title: 'Noto Serif', serif;
+  --ff-text: 'Muli', sans-serif;
+}
+
+.my-expenses{
+  background-color: var(--white);
+  font-family: var(--ff-text);
+  font-size: 16px;
+  margin: 5rem;
+}
+
+.card {
+  width: 32rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  border: 1px solid rgba(0,0,0,0.1);
+  // border-bottom-right-radius: 2.5rem;
+  box-shadow: 3px 2px 10px rgba(0,0,0,0.15);
+}
+
+.card--title {
+  font-family: var(--ff-title);
+}
+
+.card__title-box {
+  text-align: center;
+  background-color: var(--primary-color);
+  color: #555;
+}
+
+
+</style>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add new
+</button>
+
+<div>
+     Name
+    <input id="name_input">
+    Category
+    <input id="search_input">
+    <button class="btn btn-primary" onclick="search()">Search</button>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Category</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for expense in current_user.expenses %}
+    <tr>
+      <th scope="row">{{expense.id}}</th>
+      <td name="name_cell">{{expense.name}}</td>
+      <td name="category_cell">{{expense.category}}</td>
+      <td>{{expense.amount}}</td>
+      <td>{{expense.date.strftime("%Y-%m-%d")}}</td>
+      <td>
+          <a href="/expenses_update/{{expense.id}}"><button class="btn btn-warning"><i class="bi bi-pencil"></i></button></a>
+          <a href="/expenses_delete/{{expense.id}}"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New expense</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST">
+                <div class="modal-body">
+
+                    <div class="'form-group">
+                        <label for="name">Name</label>
+                        <input name="name" id="name" class="form-control">
+                    </div>
+                    <div class="'form-group">
+                        <label> Category</label>
+                           <select name="category">
+                           <option value="Dom">Dom</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Jedzenie">Jedzenie</option>
+                            <option value="Zwierzęta">Zwierzęta</option>
+                            <option value="Rozrywka">Rozrywka</option>
+                            <option value="Inne">Inne</option>
+                            </select>
+                    </div>
+                    <div class="'form-group">
+                        <label for="amount">Amount</label>
+                        <input name="amount" id="amount" class="form-control">
+                    </div>
+                    <div>
+                        <label for="date">Date</label>
+                        <input type="date" name="date" id="date" class="form-control">
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

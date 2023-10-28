@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}History{% endblock %}
+
+{% block content %}
+
+<div>
+     Name
+    <input id="name_input">
+    Category
+    <input id="search_input">
+    <button class="btn btn-primary" onclick="search_history()">Search</button>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Date</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Name</th>
+      <th scope="col">Category</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for x in all %}
+    <tr>
+        <th scope="row">{{x.id}}</th>
+        <td class="col">{{x.date.strftime("%Y-%m-%d")}}</td>
+        <td class="col">{{x.amount}}</td>
+        {% if isinstance(x, Incomes) %}
+        <td name="name_cell" class="col"></td>
+        <td name="category_cell" class="col"></td>
+        {% else %}
+        <td name="name_cell" class="col">{{x.name}}</td>
+        <td name="category_cell" class="col">{{x.category}}</td>
+        {% endif %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
